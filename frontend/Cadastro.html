@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Sabor & Arte</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #ff8c42;
+            --primary-dark: #f17a35;
+            --primary-light: #ffb088;
+            --secondary-color: #4a90a0;
+            --accent-color: #ffd5c2;
+            --text-color: #2d3436;
+            --text-light: #636e72;
+            --background: #fff9f5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('background.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .signup-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 1.5rem;
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.1),
+                0 20px 48px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+            animation: containerFloat 0.8s ease-out forwards;
+        }
+
+        @keyframes containerFloat {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .signup-header h1 {
+            color: var(--text-color);
+            margin: 0.5rem 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .signup-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon input {
+            width: 100%;
+            padding: 1rem;
+            padding-left: 3rem;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.8rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .input-icon::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.5;
+        }
+
+        .input-icon.username::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff8c42'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+        }
+
+        .input-icon.email::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff8c42'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+        }
+
+        .input-icon.password::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff8c42'%3E%3Cpath d='M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z'/%3E%3C/svg%3E");
+        }
+
+        .input-requirements {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .input-requirements .requirement {
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .input-requirements .requirement::before {
+            content: '❌';
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .input-requirements .requirement.valid::before {
+            content: '✅';
+        }
+
+        .signup-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.8rem;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
+        }
+
+        .signup-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-light);
+        }
+
+        .signup-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            display: none;
+        }
+
+        .success-message {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+
+        .error-message {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 2rem;
+                margin: 1rem;
+                border-radius: 1rem;
+                width: calc(100% - 2rem);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-header">
+            <h1>Cadastro</h1>
+            <p>Crie sua conta e comece a compartilhar receitas</p>
+        </div>
+
+        <div id="successMessage" class="message success-message"></div>
+        <div id="errorMessage" class="message error-message"></div>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <div class="input-icon username">
+                    <input type="text" id="username" name="username" placeholder="Nome de usuário" required>
+                </div>
+                <div class="input-requirements">
+                    <div id="usernameLength" class="requirement">Mínimo de 3 caracteres</div>
+                    <div id="usernameChars" class="requirement">Apenas letras, números e _</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-icon email">
+                    <input type="email" id="email" name="email" placeholder="E-mail" required>
+                </div>
+                <div class="input-requirements">
+                    <div id="emailValid" class="requirement">E-mail válido</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-icon password">
+                    <input type="password" id="password" name="password" placeholder="Senha" required>
+                </div>
+                <div class="input-requirements">
+                    <div id="passwordLength" class="requirement">Mínimo de 8 caracteres</div>
+                    <div id="passwordLower" class="requirement">Uma letra minúscula</div>
+                    <div id="passwordUpper" class="requirement">Uma letra maiúscula</div>
+                    <div id="passwordNumber" class="requirement">Um número</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-icon password">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirmar Senha" required>
+                </div>
+                <div class="input-requirements">
+                    <div id="passwordMatch" class="requirement">Senhas devem ser iguais</div>
+                </div>
+            </div>
+
+            <button type="submit" class="signup-btn">Criar Conta</button>
+        </form>
+
+        <div class="signup-footer">
+            Já tem uma conta? <a href="/login">Fazer login</a>
+        </div>
+    </div>
+
+    <!-- Firebase App (necessário para todos os produtos do Firebase) -->
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+<!-- Firebase Authentication -->
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
+
+<script>
+  // Configuração do Firebase copiada do console
+  const firebaseConfig = {
+    apiKey: "SUA_API_KEY",
+    authDomain: "SEU_AUTH_DOMAIN",
+    projectId: "SEU_PROJECT_ID",
+    storageBucket: "SEU_STORAGE_BUCKET",
+    messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+    appId: "SEU_APP_ID"
+  };
+
+  // Inicializa o Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+</script>
+
+
+    <script>
+        $(document).ready(function() {
+            const validations = {
+                username: {
+                    length: false,
+                    chars: false
+                },
+                email: {
+                    valid: false
+                },
+                password: {
+                    length: false,
+                    lower: false,
+                    upper: false,
+                    number: false,
+                    match: false
+                }
+            };
+
+            function updateRequirement(id, valid) {
+                const element = $(`#${id}`);
+                element.removeClass('valid invalid').addClass(valid ? 'valid' : 'invalid');
+            }
+
+            function validateUsername() {
+                const username = $('#username').val();
+                validations.username.length = username.length >= 3;
+                validations.username.chars = /^[a-zA-Z0-9_]+$/.test(username);
+                updateRequirement('usernameLength', validations.username.length);
+                updateRequirement('usernameChars', validations.username.chars);
+            }
+
+            function validateEmail() {
+                const email = $('#email').val();
+                validations.email.valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                updateRequirement('emailValid', validations.email.valid);
+            }
+
+            function validatePassword() {
+                const password = $('#password').val();
+                validations.password.length = password.length >= 8;
+                validations.password.lower = /[a-z]/.test(password);
+                validations.password.upper = /[A-Z]/.test(password);
+                validations.password.number = /[0-9]/.test(password);
+                updateRequirement('passwordLength', validations.password.length);
+                updateRequirement('passwordLower', validations.password.lower);
+                updateRequirement('passwordUpper', validations.password.upper);
+                updateRequirement('passwordNumber', validations.password.number);
+            }
+
+            function validatePasswordMatch() {
+                const password = $('#password').val();
+                const confirmPassword = $('#confirmPassword').val();
+                validations.password.match = password === confirmPassword && password !== '';
+                updateRequirement('passwordMatch', validations.password.match);
+            }
+
+            $('#username').on('input', validateUsername);
+            $('#email').on('input', validateEmail);
+            $('#password').on('input', function() {
+                validatePassword();
+                validatePasswordMatch();
+            });
+            $('#confirmPassword').on('input', validatePasswordMatch);
+
+            $('#signupForm').on('submit', function (e) {
+  e.preventDefault();
+  const email = $('#email').val();
+  const password = $('#password').val();
+
+  auth.createUserWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      alert('Usuário cadastrado com sucesso!');
+      console.log('Usuário:', userCredential.user);
+    })
+    .catch((error) => {
+      alert('Erro ao cadastrar usuário: ' + error.message);
+    });
+});
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabor & Arte</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+ :root {
+            --primary-color: #ff6b00;
+            --secondary-color: #ff7f50;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --card-bg: #fff;
+            --border-color: #eee;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --tips-bg: #e6f3ff;
+            --tips-border: #3498db;
+            --nav-bg: #ff6b00;
+            --footer-bg: #ff6b00;
+            --modal-bg: #fefefe;
+            --gradient-primary: #ff6b00;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #fff;
+            --card-bg: #2d2d2d;
+            --border-color: #444;
+            --tips-bg: #2c3e50;
+            --tips-border: #3498db;
+            --nav-bg: #ff6b00;
+            --footer-bg: #ff6b00;
+            --modal-bg: #2d2d2d;
+            --category-bg: #ff6b00;
+            --category-hover: #ff6b00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-bar {
+            background: var(--gradient-primary);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(105, 0, 0, 0.2);
+        }
+
+
+        header {
+            background-image: url('logo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #f4f4f4;
+            text-align: center;
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        header h1, header p {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .theme-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        nav {
+            background-color: var(--nav-bg);
+            padding: 1rem;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .recipe-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .recipe-content {
+            padding: 1.5rem;
+        }
+
+        .recipe-header {
+            margin-bottom: 1rem;
+        }
+
+        .recipe-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .recipe-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .recipe-description {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .recipe-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .rating {
+            color: #ffd700;
+        }
+
+        .view-recipe {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .view-recipe:hover {
+            background: var(--secondary-color);
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .social-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            background: white;
+        }
+
+        .social-button:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: var(--modal-bg);
+            color: var(--text-color);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .form-group input[type="submit"] {
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background: var(--secondary-color);
+        }
+
+        .close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        footer {
+            background-color: var(--footer-bg);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+          .social-media {
+            display: flex;
+            justify-content: flex-end;
+            gap: 4px;
+            margin: 10px 30px 0 0;
+            position: absolute;
+            right: 0;
+            top: 15px;
+        }
+
+        .social-media a {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 3px 4px;
+            border-radius: 15px;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-media a:hover {
+            opacity: 0.8;
+        }
+
+        .facebook {
+            background-color: #1877f2;
+        }
+
+        .instagram {
+            background: linear-gradient(45deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        }
+
+        .youtube {
+            background-color: #ff0000;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .social-button {
+            width: 30px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-button:hover {
+            transform: scale(1.1);
+        }
+
+        .social-button.facebook {
+            background-color: transparent;
+        }
+
+        .social-button.facebook img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .social-button.instagram {
+            background-color: transparent;
+        }
+
+        .social-button.instagram img {
+            width: 50px;
+            height: 50px;
+           border-radius: 50%;
+        }
+
+        .social-button.youtube {
+            background-color: transparent;
+        }
+
+        .social-button.youtube img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .recipes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .recipe-meta {
+                flex-wrap: wrap;
+            }
+        }
+
+        .newsletter-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: var(--radius);
+            text-align: center;
+        }
+
+        .newsletter-form {
+            max-width: 500px;
+            margin: 1rem auto;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+       
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <img src="DarkMode.jpg" alt="Dark Mode" class="theme-icon">
+    </button>
+</style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-utensils"></i>
+                <h1 style="margin: 0;">Sabor & Arte</h1>
+            </a>
+            <div class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="#"><i class="fas fa-book-open"></i> Receitas</a>
+                <a href="#"><i class="fas fa-info-circle"></i> Sobre</a>
+                <a href="#"><i class="fas fa-envelope"></i> Contato</a>
+                <a href="#" id="loginBtn"><i class="fas fa-user"></i> Login</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Buscar receitas...">
+            <button class="filter-btn">Buscar</button>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active">Todas</button>
+            <button class="filter-btn">Doces</button>
+            <button class="filter-btn">Salgadas</button>
+            <button class="filter-btn">Veganas</button>
+            <button class="filter-btn">Sem Glúten</button>
+            <button class="filter-btn">Low Carb</button>
+            <button class="filter-btn">Sobremesas</button>
+            <button class="filter-btn">Bebidas</button>
+            <button class="filter-btn">Favoritos</button>
+        </div>
+
+        <div class="recipes-grid">
+            <article class="recipe-card">
+                <img src="Bolo_de_cenoura.jpg" alt="Bolo de Cenoura" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Bolo de Cenoura</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 60 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 8 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Doces</span>
+                        <span class="tag">Bolos</span>
+                        <span class="tag">Favoritos</span>
+                    </div>
+                    <p class="recipe-description">
+                        Um delicioso bolo de cenoura coberto com calda de chocolate. Perfeito para o café da tarde!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★☆ 4.5</div>
+                        <a href="bolo_de_cenoura.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="Pão.jpg" alt="Pão Caseiro" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Pão Caseiro</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 120 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 10 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Salgadas</span>
+                        <span class="tag">Pães</span>
+                    </div>
+                    <p class="recipe-description">
+                        Pão caseiro macio e saboroso, com casca crocante. Ideal para café da manhã!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 5.0</div>
+                        <a href="Pão.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="Salada_grega.jpg" alt="Pão Caseiro" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Salada Grega</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 15 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 4 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Veganas</span>
+                        <span class="tag">Saladas</span>
+                        <span class="tag">Sem Glúten</span>
+                    </div>
+                    <p class="recipe-description">
+                        Salada refrescante com pepino, tomate, azeitonas e temperos mediterrâneos.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★☆ 4.8</div>
+                        <a href="#" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="lasanha.jpg" alt="Lasanha de Carne" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Lasanha de Carne</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 90 min</span>
+                            <span class="meta-item">👨‍🍳 Médio</span>
+                            <span class="meta-item">🍽️ 6 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Salgadas</span>
+                        <span class="tag">Massas</span>
+                        <span class="tag">Favoritos</span>
+                    </div>
+                    <p class="recipe-description">
+                        Deliciosa lasanha de carne com camadas de molho e queijo derretido.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★☆ 4.7</div>
+                        <a href="lasanha.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="recipe-card">
+                <img src="cheesecake.jpg" alt="Cheesecake de Morango" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Cheesecake de Morango</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 60 min</span>
+                            <span class="meta-item">👨‍🍳 Médio</span>
+                            <span class="meta-item">🍽️ 8 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Doces</span>
+                        <span class="tag">Sobremesas</span>
+                    </div>
+                    <p class="recipe-description">
+                        Cheesecake cremoso com cobertura de morangos frescos e geleia.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 5.0</div>
+                        <a href="cheesecake.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="recipe-card">
+                <img src="tacos.jpg" alt="Tacos Mexicanos" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Tacos Mexicanos</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 30 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 4 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Salgadas</span>
+                        <span class="tag">Mexicana</span>
+                        <span class="tag">Favoritos</span>
+                    </div>
+                    <p class="recipe-description">
+                        Tacos crocantes recheados com carne, queijo e vegetais frescos.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★☆ 4.6</div>
+                        <a href="tacos.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="smoothie_verduras.jpg" alt="Smoothie Verde Detox" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Smoothie Verde Detox</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 10 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 2 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Bebidas</span>
+                        <span class="tag">Detox</span>
+                        <span class="tag">Veganas</span>
+                    </div>
+                    <p class="recipe-description">
+                        Uma bebida refrescante e desintoxicante, feita com folhas verdes, frutas e um toque de gengibre.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 4.9</div>
+                        <a href="smoothie_verde.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="recipe-card">
+                <img src="quiche_espinafre.jpg" alt="Quiche de Espinafre e Ricota" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Quiche de Espinafre e Ricota</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 50 min</span>
+                            <span class="meta-item">👨‍🍳 Médio</span>
+                            <span class="meta-item">🍽️ 6 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Salgadas</span>
+                        <span class="tag">Vegetariano</span>
+                        <span class="tag">Saudável</span>
+                    </div>
+                    <p class="recipe-description">
+                        Uma quiche leve e nutritiva, feita com espinafre fresco e ricota em uma base crocante.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★☆ 4.7</div>
+                        <a href="quiche_espinafre.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="recipe-card">
+                <img src="panqueca_banana.jpg" alt="Panquecas de Banana e Aveia" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Panquecas de Banana e Aveia</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 20 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 4 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Doces</span>
+                        <span class="tag">Sem Glúten</span>
+                        <span class="tag">Saudável</span>
+                    </div>
+                    <p class="recipe-description">
+                        Panquecas fofas e sem glúten, feitas com banana e aveia, perfeitas para o café da manhã.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★☆ 4.8</div>
+                        <a href="panquecas_banana.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card brownie-recipe">
+                <img src="Brownie.jpg" alt="Brownie de Chocolate" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Brownie de Chocolate</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 45 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 12 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Doces</span>
+                        <span class="tag">Bolos</span>
+                    </div>
+                    <p class="recipe-description">
+                        Um brownie delicioso, denso e úmido, com pedaços generosos de chocolate. Perfeito para qualquer ocasião!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 4.8</div>
+                        <a href="Brownie.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card chicken-wrap-recipe">
+                <img src="Wrap.jpg" alt="Wrap de Frango com Abacate" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Wrap de Frango com Abacate</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 20 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 2 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Saudável</span>
+                        <span class="tag">Prato Principal</span>
+                    </div>
+                    <p class="recipe-description">
+                        Um wrap delicioso e nutritivo, recheado com frango grelhado e abacate cremoso.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 4.9</div>
+                        <a href="Wrap-Frango.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="Halloween.jpg" alt="Bolinhos decorados de Halloween" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Bolinhos decorados de Halloween</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 90 min</span>
+                            <span class="meta-item">👨‍🍳 Médio</span>
+                            <span class="meta-item">🍽️ 10 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Doces</span>
+                        <span class="tag">Bolos</span>
+                        <span class="tag halloween-tag">Halloween</span>
+                    </div>
+                    <p class="recipe-description">
+                        Delicioso bolo decorado para Halloween, com sabor de laranja e recheio cremoso. Uma ótima opção para a festa!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 4.8</div>
+                        <a href="Halloween.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="Smoothie.jpg" alt="Smoothie de Frutas Vermelhas" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Smoothie de Frutas Vermelhas</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 10 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 2 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Bebidas</span>
+                        <span class="tag">Fit</span>
+                        <span class="tag">Café da Manhã</span>
+                    </div>
+                    <p class="recipe-description">
+                        Smoothie cremoso com morango, framboesa, mirtilo, iogurte grego e mel. Rico em antioxidantes!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 4.8</div>
+                        <a href="Smoothie.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="recipe-card">
+                <img src="Pudim.jpg" alt="Pudim de Leite Condensado" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Pudim de Leite Condensado</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 60 min</span>
+                            <span class="meta-item">👨‍🍳 Médio</span>
+                            <span class="meta-item">🍽️ 8 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Sobremesas</span>
+                        <span class="tag">Doces</span>
+                    </div>
+                    <p class="recipe-description">
+                        Pudim cremoso com calda de caramelo brilhante. Textura aveludada que derrete na boca!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 4.9</div>
+                        <a href="Pudim.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+            
+            <article class="recipe-card">
+                <img src="Omelete.jpg" alt="Omelete Mediterrâneo" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Omelete Mediterrâneo</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 20 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 1 porção</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Fit</span>
+                        <span class="tag">Café da Manhã</span>
+                        <span class="tag">Low Carb</span>
+                    </div>
+                    <p class="recipe-description">
+                        Omelete fofinho com espinafre, tomate cereja, queijo feta e azeitonas pretas. Rico em proteínas!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★☆ 4.6</div>
+                        <a href="Omelete.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="SopaCabotia.jpg" alt="Sopa de Cabotiã" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Sopa Cremosa de Cabotiá</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 35 min</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 4 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Fit</span>
+                        <span class="tag">Vegano</span>
+                        <span class="tag">Low Carb</span>
+                    </div>
+                    <p class="recipe-description">
+                        Sopa cremosa de cabotiá com leite de coco, curry e gengibre. Reconfortante e saudável!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 4.9</div>
+                        <a href="Sopa.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="Overnight.jpg" alt="Overnight Oats" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Overnight Oats com Frutas</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 10 min (+8h)</span>
+                            <span class="meta-item">👨‍🍳 Fácil</span>
+                            <span class="meta-item">🍽️ 1 porção</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Fit</span>
+                        <span class="tag">Café da Manhã</span>
+                        <span class="tag">Vegetariano</span>
+                    </div>
+                    <p class="recipe-description">
+                        Aveia preparada com leite vegetal, chia, frutas vermelhas e mel. Prepare à noite e coma pela manhã!
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★☆ 4.5</div>
+                        <a href="Overnight.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <img src="PeixeAssado.jpg" alt="Peixe Assado" class="recipe-image">
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <h3 class="recipe-title">Salmão Assado com Legumes</h3>
+                        <div class="recipe-meta">
+                            <span class="meta-item">⏰ 30 min</span>
+                            <span class="meta-item">👨‍🍳 Médio</span>
+                            <span class="meta-item">🍽️ 2 porções</span>
+                        </div>
+                    </div>
+                    <div class="recipe-tags">
+                        <span class="tag">Fit</span>
+                        <span class="tag">Pratos Principais</span>
+                        <span class="tag">Low Carb</span>
+                    </div>
+                    <p class="recipe-description">
+                        Filé de salmão assado com aspargos, brócolis e abobrinha. Temperado com ervas frescas e limão.
+                    </p>
+                    <div class="recipe-footer">
+                        <div class="rating">★★★★★ 4.9</div>
+                        <a href="Salmao.html" class="view-recipe">Ver Receita</a>
+                    </div>
+                </div>
+            </article>
+            
+            <style>
+.tag {
+    background-color: #ff9800;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.halloween-tag {
+    background: linear-gradient(
+        45deg,
+        #ff6b01,
+        #ff8c00,
+        #ffe600,
+        #ff8c00,
+        #ff6b01
+    );
+    background-size: 200% 200%;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(255, 107, 1, 0.3);
+    border: 1px solid rgba(255, 107, 1, 0.3);
+    animation: halloweenGradient 3s ease infinite;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.halloween-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 107, 1, 0.4);
+}
+
+@keyframes halloweenGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Adiciona um brilho sutil */
+.halloween-tag::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% {
+        transform: rotate(45deg) translateX(-100%);
+    }
+    50% {
+        transform: rotate(45deg) translateX(100%);
+    }
+    100% {
+        transform: rotate(45deg) translateX(100%);
+    }
+}
+            </style>
+            
+
+        </div>
+        <section class="newsletter-section">
+            <h2>Receba Nossas Receitas</h2>
+            <p>Inscreva-se para receber receitas exclusivas e dicas culinárias semanalmente!</p>
+            <form class="newsletter-form">
+                <div class="form-group">
+                    <input type="email" placeholder="Seu melhor e-mail" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Inscrever-se" class="filter-btn">
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <!-- Adicione uma div para mensagens de feedback -->
+            <div id="loginMessage" style="margin-bottom: 1rem; padding: 0.5rem; border-radius: var(--radius); display: none;"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="usuario">Nome do Usuário</label>
+                    <input type="usuario" id="loginUsuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Entrar" class="filter-btn">
+                </div>
+                <p>Não tem uma conta? <a href="#" style="color: var(--primary-color);">Cadastre-se</a></p>
+                <p><a href="#" style="color: var(--primary-color);">Esqueceu sua senha?</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Adicione estes estilos ao seu CSS -->
+<style>
+    .message-success {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .message-error {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .loading {
+        cursor: wait !important;
+        opacity: 0.7;
+    }
+
+    #loginMessage {
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+
+    .success-message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+</style>
+
+<!-- Atualize o JavaScript com a nova lógica de login -->
+<script>
+    // ... (mantenha o código anterior de theme toggle e modal)
+
+    // Função para mostrar mensagens de feedback
+    function showLoginMessage(message, type) {
+        const messageDiv = document.getElementById('loginMessage');
+        messageDiv.textContent = message;
+        messageDiv.className = `message-${type}`;
+        messageDiv.style.display = 'block';
+        
+        // Esconde a mensagem após 3 segundos
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    // Simula verificação de credenciais
+    function verificarCredenciais(email, senha) {
+        // Aqui você substituiria isso por uma chamada real à sua API de autenticação
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // Exemplo de credenciais para teste
+                if (usuario === "teste@email.com" && senha === "123456") {
+                    resolve({ nome: "Usuário Teste" });
+                } else {
+                    reject(new Error("Senha ou email inválidos"));
+                }
+            }, 1000); // Simula delay de rede
+        });
+    }
+
+    // Form Submissions
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const usuario = document.getElementById('loginUsuario').value;
+        const senha = document.getElementById('loginPassword').value;
+        
+        // Desabilita o formulário durante o processo
+        const submitBtn = form.querySelector('input[type="submit"]');
+        const originalBtnText = submitBtn.value;
+        submitBtn.value = 'Entrando...';
+        submitBtn.disabled = true;
+        form.classList.add('loading');
+
+        try {
+            const resultado = await verificarCredenciais(email, senha);
+            showLoginMessage(`Bem-vindo, ${resultado.nome}!`, 'success');
+            
+            // Aguarda a mensagem ser exibida antes de fechar o modal
+            setTimeout(() => {
+                document.getElementById('loginModal').style.display = 'none';
+                // Aqui você pode redirecionar o usuário ou atualizar a UI
+                const loginBtn = document.getElementById('loginBtn');
+                loginBtn.innerHTML = `<i class="fas fa-user"></i> ${resultado.nome}`;
+            }, 1000);
+
+        } catch (erro) {
+            showLoginMessage(erro.message, 'error');
+        } finally {
+            // Reativa o formulário
+            submitBtn.value = originalBtnText;
+            submitBtn.disabled = false;
+            form.classList.remove('loading');
+        }
+    });
+
+</script>
+
+    <footer>
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: left;">
+                <div>
+                    <h3>Sobre Nós</h3>
+                    <p>Sabor & Arte é seu destino para descobrir receitas deliciosas e aprender técnicas culinárias.</p>
+                </div>
+                <div>
+                    <h3>Links Úteis</h3>
+                    <ul style="list-style: none;">
+                        <li><a href="#" style="color: white; text-decoration: none;">Política de Privacidade</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">Termos de Uso</a></li>
+                        <li><a href="#" style="color: white; text-decoration: none;">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Contato</h3>
+                    <p>📧 contato@saborearte.com</p>
+                    <p>📱 (11) 99999-9999</p>
+                </div>
+            </div>
+            <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p>&copy; 2024 Sabor & Arte. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
+            localStorage.setItem('theme', document.body.dataset.theme);
+        }
+
+        // Load saved theme
+        document.body.dataset.theme = localStorage.getItem('theme') || '';
+
+        // Modal Functionality
+        const modal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const closeBtn = document.getElementsByClassName('close')[0];
+
+        loginBtn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Filter Buttons
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                // Aqui você pode adicionar a lógica de filtro das receitas
+            });
+        });
+
+        // Form Submissions
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Aqui você pode adicionar a lógica de login
+            console.log('Login submitted');
+        });
+
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Aqui você pode adicionar a lógica de inscrição na newsletter
+            console.log('Newsletter subscription submitted');
+        });
+    </script>
+</body>
+<!-- CSS -->
+<style>
+    .recipes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
+        position: relative; /* Adicionado para posicionamento da mensagem */
+    }
+    
+    .recipe-card {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+        display: none;
+    }
+    
+    /* Estilo para a mensagem de nenhuma receita encontrada */
+    .no-results-message {
+        display: none;
+        text-align: center;
+        width: 100%;
+        padding: 2rem;
+        font-size: 1.2rem;
+        color: #666;
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin: 2rem auto;
+    }
+    
+    .no-results-message i {
+        font-size: 2.5rem;
+        color: #999;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    </style>
+    
+    <!-- Adicione esta div após a div recipes-grid -->
+    <div class="no-results-message">
+        <i class="fas fa-search"></i>
+        <p>Ops! Nenhuma receita encontrada para "<span class="search-term"></span>"</p>
+        <p>Tente buscar por outro termo ou verifique a ortografia.</p>
+    </div>
+    
+    <!-- JavaScript -->
+    <script>
+        const searchInput = document.querySelector('.search-input');
+        const searchButton = document.querySelector('.search-bar .filter-btn');
+        const recipeCards = document.querySelectorAll('.recipe-card');
+        const noResultsMessage = document.querySelector('.no-results-message');
+    
+        function normalizeText(text) {
+            return text.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9\s]/g, '');
+        }
+    
+        function searchRecipes() {
+            const searchTerm = searchInput.value.trim();
+            const normalizedSearchTerm = normalizeText(searchTerm);
+            const searchWords = normalizedSearchTerm.split(' ').filter(word => word.length > 0);
+            
+            let foundResults = false;
+    
+            recipeCards.forEach(card => {
+                const title = normalizeText(card.querySelector('.recipe-title').textContent);
+                const description = normalizeText(card.querySelector('.recipe-description').textContent);
+                const tags = Array.from(card.querySelectorAll('.tag'))
+                    .map(tag => normalizeText(tag.textContent));
+    
+                const matchesSearch = searchWords.every(word =>
+                    title.includes(word) ||
+                    description.includes(word) ||
+                    tags.some(tag => tag.includes(word))
+                );
+    
+                card.style.display = matchesSearch ? 'block' : 'none';
+                if (matchesSearch) foundResults = true;
+            });
+    
+            // Atualiza a mensagem de nenhum resultado
+            if (!foundResults && searchTerm !== '') {
+                noResultsMessage.style.display = 'block';
+                noResultsMessage.querySelector('.search-term').textContent = searchTerm;
+            } else {
+                noResultsMessage.style.display = 'none';
+            }
+        }
+    
+        // Evento de clique no botão de pesquisa
+        searchButton.addEventListener('click', searchRecipes);
+    
+        // Evento de pressionar Enter no campo de pesquisa
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchRecipes();
+            }
+        });
+    
+        // Mostra todas as receitas inicialmente
+        recipeCards.forEach(card => {
+            card.style.display = 'block';
+        });
+        noResultsMessage.style.display = 'none';
+
+        // Array para armazenar os usuários cadastrados
+const usuariosCadastrados = [];
+
+// Função para mostrar mensagens de feedback
+function showLoginMessage(message, type) {
+    const messageDiv = document.getElementById('loginMessage');
+    messageDiv.textContent = message;
+    messageDiv.className = `message-${type}`;
+    messageDiv.style.display = 'block';
+    
+    // Esconde a mensagem após 3 segundos
+    setTimeout(() => {
+        messageDiv.style.display = 'none';
+    }, 3000);
+}
+
+// Função para verificar se o usuário já está cadastrado
+function verificarCredenciais(email, senha) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            // Verifica se o usuário já está cadastrado
+            const usuarioExistente = usuariosCadastrados.find(usuario => usuario.email === email);
+            
+            if (usuarioExistente) {
+                reject(new Error("Usuário já cadastrado!"));
+            } else {
+                // Se o usuário não existir, cadastra o novo usuário
+                usuariosCadastrados.push({ email, senha });
+                resolve({ nome: email.split('@')[0] }); // Usa o nome de usuário como o texto antes do '@'
+            }
+        }, 1000); // Simula um delay de rede
+    });
+}
+
+// Form Submissions
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const usuario = document.getElementById('loginUsuario').value;
+    const senha = document.getElementById('loginPassword').value;
+    
+    // Desabilita o formulário durante o processo
+    const submitBtn = form.querySelector('input[type="submit"]');
+    const originalBtnText = submitBtn.value;
+    submitBtn.value = 'Entrando...';
+    submitBtn.disabled = true;
+    form.classList.add('loading');
+
+    try {
+        const resultado = await verificarCredenciais(usuario, senha);
+        showLoginMessage(`Usuário cadastrado com sucesso!`, 'success');
+        
+        // Aguarda a mensagem ser exibida antes de fechar o modal
+        setTimeout(() => {
+            document.getElementById('loginModal').style.display = 'none';
+            const loginBtn = document.getElementById('loginBtn');
+            loginBtn.innerHTML = `<i class="fas fa-user"></i> ${resultado.nome}`;
+        }, 1000);
+
+    } catch (erro) {
+        showLoginMessage(erro.message, 'error');
+    } finally {
+        // Reativa o formulário
+        submitBtn.value = originalBtnText;
+        submitBtn.disabled = false;
+        form.classList.remove('loading');
+    }
+});
+    </script>
+    <script>
+        // Função para filtrar receitas pela tag clicada
+        function filterByTag(tag) {
+            const recipeCards = document.querySelectorAll('.recipe-card');
+            recipeCards.forEach(card => {
+                const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.trim());
+                card.style.display = tags.includes(tag) ? 'block' : 'none';
+            });
+        }
+    
+        // Adiciona o evento de clique para cada tag
+        document.querySelectorAll('.tag').forEach(tagElement => {
+            tagElement.addEventListener('click', (e) => {
+                const tag = e.target.textContent.trim();
+                filterByTag(tag);
+            });
+        });
+    </script>
+    <script>
+        // Função para filtrar receitas pela tag clicada
+        function filterByTag(tag) {
+            const recipeCards = document.querySelectorAll('.recipe-card');
+            
+            // Verifica se a tag é "Todas"
+            if (tag === 'Todas') {
+                recipeCards.forEach(card => card.style.display = 'block');
+            } else {
+                recipeCards.forEach(card => {
+                    const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.trim());
+                    card.style.display = tags.includes(tag) ? 'block' : 'none';
+                });
+            }
+        }
+    
+        // Adiciona o evento de clique para cada tag
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const tag = e.target.textContent.trim();
+                filterByTag(tag);
+            });
+        });
+    </script>
+<script>
+    // Função para salvar o nome de usuário no localStorage
+    function salvarLoginLocal(nomeUsuario) {
+        localStorage.setItem('usuarioLogado', nomeUsuario);
+    }
+
+    // No evento de login, ao realizar o login com sucesso
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const usuario = document.getElementById('loginUsuario').value;
+        const senha = document.getElementById('loginPassword').value;
+
+        // Aqui insira a lógica de autenticação do seu sistema
+
+        try {
+            // Suponha que a verificação do login foi bem-sucedida
+            salvarLoginLocal(usuario); // Salva o usuário no localStorage
+            document.getElementById('loginMessage').textContent = `Bem-vindo, ${usuario}!`;
+            document.getElementById('loginMessage').style.display = 'none';
+
+            // Exibe o nome do usuário no botão de login
+            document.getElementById('loginBtn').innerHTML = `<i class="fas fa-user"></i> ${usuario}`;
+
+            // Remova ou comente a linha abaixo para que o modal não feche automaticamente
+            // document.getElementById('loginModal').style.display = 'none';
+
+        } catch (error) {
+            console.error("Erro no login:", error);
+            // Mostre uma mensagem de erro, se necessário
+        }
+    });
+
+    // Carregar o login do localStorage ao carregar a página
+    window.addEventListener('load', () => {
+        const usuarioLogado = localStorage.getItem('usuarioLogado');
+        if (usuarioLogado) {
+            document.getElementById('loginBtn').innerHTML = `<i class="fas fa-user"></i> ${usuarioLogado}`;
+        }
+    });
+</script>
+
+    </body>    
+    </body>
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Login</h2>
+            <p>
+                <a href="login.html">Entrar</a>
+            </p>
+            <p>
+                <a href="cadastro.html">Cadastrar</a>
+            </p>
+        </div>
+    </div>
+</html>

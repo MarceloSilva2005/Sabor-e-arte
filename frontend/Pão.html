@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pão Caseiro - Sabor & Arte</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff8c00;
+            --primary-dark: #e67e00;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --card-bg: #ffffff;
+            --border-color: #eee;     
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --tips-bg: #e6f3ff;
+            --tips-border: #3498db;       
+            --section-bg: #ffffff;
+            --modal-bg: #fefefe;
+            --gradient-primary: #ff6b00;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #fff;
+            --card-bg: #2d2d2d;
+            --border-color: #444;
+            --tips-bg: #2c3e50;
+            --tips-border: #3498db;
+            --section-bg: #2a2a2a;
+            --nav-bg: #ff6b00;
+            --footer-bg: #ff6b00;
+            --modal-bg: #2d2d2d;
+            --text-light: #fff;
+            --text-gray: #aaa;
+            --category-bg: #ff6b00;
+            --category-hover: #ff6b00;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-light);
+            line-height: 1.6;
+            background-color: var(--bg-color);
+        }
+
+        .nav-bar {
+            background: var(--gradient-primary);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 24px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .theme-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        nav {
+            background-color: var(--nav-bg);
+            padding: 1rem;
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: var(--modal-bg);
+            color: var(--text-color);
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .form-group input[type="submit"] {
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background: var(--secondary-color);
+        }
+
+        .close {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        footer {
+            background-color: var(--footer-bg);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(105, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .recipe-header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 40px;
+            background-color: var(--section-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .recipe-title {
+            color: var(--primary-color);
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .recipe-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .meta-item i {
+            color: var(--primary-color);
+        }
+
+        /* Novo container dedicado para a imagem */
+        .recipe-image-container {
+            position: relative;
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: var(--section-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        /* Borda decorativa */
+        .recipe-image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        /* Estilização da imagem */
+        .recipe-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+            border: 3px solid rgba(255, 140, 0, 0.2);
+        }
+
+        /* Container para a legenda */
+        .recipe-image-caption {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255, 140, 0, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        /* Ícones decorativos nos cantos */
+        .recipe-image-corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            color: var(--primary-color);
+            opacity: 0.5;
+        }
+
+        .corner-top-left {
+            top: 10px;
+            left: 10px;
+        }
+
+        .corner-top-right {
+            top: 10px;
+            right: 10px;
+            transform: rotate(90deg);
+        }
+
+        .corner-bottom-left {
+            bottom: 10px;
+            left: 10px;
+            transform: rotate(-90deg);
+        }
+
+        .corner-bottom-right {
+            bottom: 10px;
+            right: 10px;
+            transform: rotate(180deg);
+        }
+
+        .recipe-section {
+            background: var(--section-bg);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 1.5rem;
+        }
+
+        .ingredients-list, .utensils-list {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .ingredients-list li, .utensils-list li {
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ingredients-list li:hover, .utensils-list li:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .ingredients-list li i, .utensils-list li i {
+            color: var(--primary-color);
+        }
+
+        .steps-list {
+            list-style-type: none;
+            padding: 0;
+            counter-reset: step-counter;
+        }
+
+        .steps-list li {
+            margin-bottom: 25px;
+            padding: 20px 25px 20px 60px;
+            position: relative;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .steps-list li:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .steps-list li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            background: var(--gradient-primary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 15px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .servings-calculator {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+        }
+
+        .servings-calculator input {
+            width: 80px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            background: var(--bg-color);
+            color: var(--text-light);
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .button {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .button i {
+            font-size: 1.1rem;
+        }
+
+        .tip-box {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        .tip-box i {
+            font-size: 2rem;
+        }
+
+        .success-tips {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .success-tips i {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+        .comments-section {
+            margin-top: 40px;
+        }
+
+        .comment-form textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            background: var(--bg-color);
+            color: var(--text-light);
+            border: 2px solid var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .social-share {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-button {
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .facebook { background: #1877f2; }
+        .twitter { background: #1da1f2; }
+        .whatsapp { background: #25d366; }
+
+        .social-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        @media print {
+            .nav-bar, .comments-section, .social-share {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .recipe-title {
+                font-size: 2rem;
+            }
+
+            .recipe-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .recipe-image-container {
+                margin: 20px auto;
+                padding: 15px;
+            }
+            
+            .recipe-image {
+                height: 250px;
+            }
+
+            .ingredients-list, .utensils-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <img src="DarkMode.jpg" alt="Dark Mode" class="theme-icon">
+    </button>
+</style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-utensils"></i>
+                <h1 style="margin: 0;">Sabor & Arte</h1>
+            </a>
+            <div class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                <a href="#"><i class="fas fa-book-open"></i> Receitas</a>
+                <a href="#"><i class="fas fa-info-circle"></i> Sobre</a>
+                <a href="#"><i class="fas fa-envelope"></i> Contato</a>
+                <a href="#" id="loginBtn"><i class="fas fa-whatsapp"></i> Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <!-- Adicione uma div para mensagens de feedback -->
+            <div id="loginMessage" style="margin-bottom: 1rem; padding: 0.5rem; border-radius: var(--radius); display: none;"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Entrar" class="filter-btn">
+                </div>
+                <p>Não tem uma conta? <a href="#" style="color: var(--primary-color);">Cadastre-se</a></p>
+                <p><a href="#" style="color: var(--primary-color);">Esqueceu sua senha?</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Adicione estes estilos ao seu CSS -->
+<style>
+    .message-success {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .message-error {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .loading {
+        cursor: wait !important;
+        opacity: 0.7;
+    }
+
+    #loginMessage {
+        text-align: center;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 4px;
+    }
+</style>
+
+<!-- Atualize o JavaScript com a nova lógica de login -->
+<script>
+    // ... (mantenha o código anterior de theme toggle e modal)
+
+    // Função para mostrar mensagens de feedback
+    function showLoginMessage(message, type) {
+        const messageDiv = document.getElementById('loginMessage');
+        messageDiv.textContent = message;
+        messageDiv.className = `message-${type}`;
+        messageDiv.style.display = 'block';
+        
+        // Esconde a mensagem após 3 segundos
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 3000);
+    }
+
+    // Simula verificação de credenciais
+    function verificarCredenciais(email, senha) {
+        // Aqui você substituiria isso por uma chamada real à sua API de autenticação
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                // Exemplo de credenciais para teste
+                if (email === "teste@email.com" && senha === "123456") {
+                    resolve({ nome: "Usuário Teste" });
+                } else {
+                    reject(new Error("Senha ou email inválidos"));
+                }
+            }, 1000); // Simula delay de rede
+        });
+    }
+
+    // Form Submissions
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const form = e.target;
+        const email = document.getElementById('loginEmail').value;
+        const senha = document.getElementById('loginPassword').value;
+        
+        // Desabilita o formulário durante o processo
+        const submitBtn = form.querySelector('input[type="submit"]');
+        const originalBtnText = submitBtn.value;
+        submitBtn.value = 'Entrando...';
+        submitBtn.disabled = true;
+        form.classList.add('loading');
+
+        try {
+            const resultado = await verificarCredenciais(email, senha);
+            showLoginMessage(`Bem-vindo, ${resultado.nome}!`, 'success');
+            
+            // Aguarda a mensagem ser exibida antes de fechar o modal
+            setTimeout(() => {
+                document.getElementById('loginModal').style.display = 'none';
+                // Aqui você pode redirecionar o usuário ou atualizar a UI
+                const loginBtn = document.getElementById('loginBtn');
+                loginBtn.innerHTML = `<i class="fas fa-user"></i> ${resultado.nome}`;
+            }, 1000);
+
+        } catch (erro) {
+            showLoginMessage(erro.message, 'error');
+        } finally {
+            // Reativa o formulário
+            submitBtn.value = originalBtnText;
+            submitBtn.disabled = false;
+            form.classList.remove('loading');
+        }
+    });
+
+</script>
+
+    <div class="container">
+        <div class="recipe-header">
+            <h1 class="recipe-title">
+                <i class="fas Forma"></i> Pão Caseiro
+            </h1>
+            <div class="recipe-meta">
+                <span class="meta-item">
+                    <i class="far fa-clock"></i> 120 minutos
+                </span>
+                <span class="meta-item">
+                    <i class="fas fa-info-circle"></i> Fácil
+                </span>
+                <span class="meta-item">
+                    <i class="fas fa-utensils"></i> 10 porções
+                </span>
+                <span class="meta-item">
+                    <i class="fas fa-star"></i> 5.0
+                </span>
+            </div>
+        </div>
+
+        <div class="recipe-section">
+            <div class="servings-calculator">
+                <i class="fas fa-calculator"></i>
+                <label>Ajustar porções:</label>
+                <input type="number" min="1" value="10" id="servings-input">
+                <button onclick="calculateIngredients()" class="button">
+                    <i class="fas fa-sync-alt"></i> Recalcular
+                </button>
+            </div>
+
+            <div class="tip-box">
+                <i class="fas fa-lightbulb"></i>
+                <div>
+                    <strong>Dica do Chef:</strong><br>
+                    Use água morna para ativar melhor o fermento e garantir que a massa cresça adequadamente.
+                </div>
+            </div>
+
+            <h2 class="section-title">
+                <i class="fas fa-list"></i> Ingredientes
+            </h2>
+            
+            <h3 class="category-title">Massa</h3>
+            <ul class="ingredients-list" id="ingredients-list">
+                <li><i class=""></i> 3 cenouras médias (cerca de 360g) raladas</li>
+                <li><i class=""></i> 3 ovos</li>
+                <li><i class=""></i> 1 xícara (chá) de óleo de girassol</li>
+                <li><i class=""></i> 2 xícaras (chá) de açúcar
+                    <li><i class=""></i> 2½ xícaras (chá) de farinha de trigo</li>
+                <li><i class=""></i> 1 colher (sopa) de fermento em pó</li>
+            </ul>
+
+            <h3 class="category-title">Cobertura</h3>
+            <ul class="ingredients-list">
+                <li><i class=""></i> 4 colheres (sopa) de chocolate em pó</li>
+                <li><i class=""></i> 1 xícara (chá) de açúcar</li>
+                <li><i class=""></i> 1 colher (sopa) de manteiga</li>
+                <li><i class=""></i> ½ xícara (chá) de leite</li>
+            </ul>
+        </div>
+
+        <div class="recipe-section">
+            <h2 class="section-title">
+                <i class="fas fa-blender"></i> Utensílios Necessários
+            </h2>
+            <ul class="utensils-list">
+                <li><i class=""></i> Liquidificador</li>
+                <li><i class=""></i> Forma retangular média</li>
+                <li><i class=""></i> Peneira</li>
+                <li><i class=""></i> Tigela grande</li>
+                <li><i class=""></i> Fouet ou batedor manual</li>
+                <li><i class=""></i> Raspador de cenoura</li>
+            </ul>
+        </div>
+
+        <div class="recipe-section">
+            <h2 class="section-title">
+                <i class="fas fa-list-ol"></i> Modo de Preparo
+            </h2>
+            <ol class="steps-list">
+                <li>Em uma tigela, misture a farinha de trigo, o açúcar e o sal.</li>
+                <li>Dissolva o fermento na água morna e adicione à mistura de farinha.</li>
+                <li>Acrescente o óleo e misture bem até formar uma massa homogênea.</li>
+                <li>Sove a massa por cerca de 10 minutos até que fique elástica e lisa.</li>
+                <li>Deixe a massa descansar por 1 hora coberta com um pano, até dobrar de volume.</li>
+                <li>Divida a massa em duas partes, modele os pães e coloque nas formas.</li>
+                <li>Deixe crescer novamente por 30 minutos.</li>
+                <li>Preaqueça o forno a 180°C e asse por cerca de 40 minutos ou até que os pães estejam dourados.</li>
+            </ol>
+
+            <button class="button" onclick="toggleTips()">
+                <i class="fas fa-lightbulb"></i> Ver Dicas de Sucesso
+            </button>
+
+            <div class="success-tips" id="success-tips">
+                <p><i class="fas fa-check-circle"></i> Para uma casca crocante, borrife água sobre o pão antes de levá-lo ao forno.</p>
+                <p><i class="fas fa-check-circle"></i> Use farinha de boa qualidade para um pão mais leve e saboroso.</p>
+                <p><i class="fas fa-check-circle"></i> Sove bem a massa para que o pão tenha uma textura uniforme.</p>
+                <p><i class="fas fa-check-circle"></i> Após assar, deixe o pão esfriar um pouco antes de cortar para manter a estrutura.</p>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <h2 class="section-title">
+                <i class="fas fa-comments"></i> Comentários
+            </h2>
+            <form class="comment-form">
+                <textarea placeholder="Deixe seu comentário..."></textarea>
+                <button type="submit" class="button">
+                    <i class="fas fa-paper-plane"></i> Enviar Comentário
+                </button>
+            </form>
+        </div>
+
+        <div class="social-share">
+            <a href="#" class="social-button facebook">
+                <i class="fab fa-facebook-f"></i> Compartilhar
+            </a>
+            <a href="#" class="social-button twitter">
+                <i class="fab fa-twitter"></i> Tweetar
+            </a>
+            <a href="#" class="social-button whatsapp">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <script>
+
+        function calculateIngredients() {
+            const baseServings = 8;
+            const newServings = document.getElementById('servings-input').value;
+            const ratio = newServings / baseServings;
+            
+            // Implementation of ingredient calculation would go here
+            console.log(`Calculating ingredients for ${newServings} servings`);
+        }
+
+        // Modal Functionality
+        const modal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const closeBtn = document.getElementsByClassName('close')[0];
+
+        loginBtn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+         // Form Submissions
+         document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Aqui você pode adicionar a lógica de login
+            console.log('Login submitted');
+        });
+
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Aqui você pode adicionar a lógica de inscrição na newsletter
+            console.log('Newsletter subscription submitted');
+        });
+
+        function toggleTips() {
+            const tips = document.getElementById('success-tips');
+            tips.style.display = tips.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+<script>
+    // Função para alternar entre os temas
+    function toggleTheme() {
+        document.body.dataset.theme = document.body.dataset.theme === 'dark' ? '' : 'dark';
+        localStorage.setItem('theme', document.body.dataset.theme);
+    }
+
+    // Carregar o tema salvo
+    document.body.dataset.theme = localStorage.getItem('theme') || '';
+</script>
+</body>
+</html>
