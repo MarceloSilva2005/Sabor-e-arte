@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Receita — Sabor & Arte</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <nav class="navbar__inner">
+      <a href="index.html" class="brand"><i class="fas fa-utensils"></i> Sabor &amp; Arte</a>
+      <div class="nav-links">
+        <a href="index.html">Início</a>
+        <a href="index.html#receitas">Receitas</a>
+        <a href="index.html#newsletter">Newsletter</a>
+      </div>
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeToggle" title="Alternar tema" aria-label="Alternar tema">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="index.html#receitas" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Voltar</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Conteúdo gerado via JS -->
+  <main id="recipeRoot" class="container"></main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">© 2024 Sabor &amp; Arte. Todos os direitos reservados.</div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/receita.js"></script>
+</body>
+</html>

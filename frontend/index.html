@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sabor & Arte — Receitas deliciosas para o dia a dia</title>
+  <meta name="description" content="Descubra receitas deliciosas, fáceis e saudáveis. Doces, salgadas, veganas, low carb e muito mais no Sabor & Arte." />
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Ícones -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <!-- Estilos -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- ================= Navbar ================= -->
+  <header class="navbar">
+    <nav class="navbar__inner">
+      <a href="index.html" class="brand">
+        <i class="fas fa-utensils"></i> Sabor &amp; Arte
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" class="active">Início</a>
+        <a href="#receitas">Receitas</a>
+        <a href="#newsletter">Newsletter</a>
+        <a href="#sobre">Sobre</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeToggle" title="Alternar tema" aria-label="Alternar tema">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="btn btn-primary" id="loginOpen">
+          <i class="fas fa-user"></i> Entrar
+        </button>
+        <button class="icon-btn nav-toggle" id="navToggle" aria-label="Menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= Hero ================= -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div>
+        <span class="hero__eyebrow"><i class="fas fa-seedling"></i> Cozinhe com amor</span>
+        <h1>Receitas que transformam ingredientes em <span>arte</span>.</h1>
+        <p>Doces, salgadas, veganas e fit — tudo em um só lugar, com passo a passo simples para você arrasar na cozinha.</p>
+        <div class="hero__actions">
+          <a href="#receitas" class="btn btn-primary"><i class="fas fa-bowl-food"></i> Explorar receitas</a>
+          <a href="#newsletter" class="btn btn-ghost">Receber novidades</a>
+        </div>
+      </div>
+      <div class="hero__media">
+        <img src="Bolo_de_cenoura.jpg" alt="Prato em destaque" />
+        <div class="hero__badge"><i class="fas fa-star"></i> +20 receitas testadas</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Receitas ================= -->
+  <main class="section" id="receitas">
+    <div class="container">
+      <h2 class="section-title">Nossas Receitas</h2>
+      <p class="section-subtitle">Filtre por categoria ou busque pela sua próxima refeição favorita.</p>
+
+      <div class="toolbar">
+        <label class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Buscar receitas, ingredientes, tags..." />
+        </label>
+        <div class="filters" id="filters"><!-- gerado via JS --></div>
+      </div>
+
+      <div class="recipes-grid" id="recipesGrid"><!-- gerado via JS --></div>
+    </div>
+  </main>
+
+  <!-- ================= Newsletter ================= -->
+  <section class="section" id="newsletter">
+    <div class="container">
+      <div class="newsletter">
+        <h2>Receba nossas receitas</h2>
+        <p>Inscreva-se e receba receitas exclusivas e dicas culinárias toda semana.</p>
+        <form id="newsletterForm">
+          <input type="email" placeholder="Seu melhor e-mail" required />
+          <button type="submit" class="btn btn-primary">Inscrever-se</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Footer ================= -->
+  <footer class="footer" id="sobre">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <a href="index.html" class="brand"><i class="fas fa-utensils"></i> Sabor &amp; Arte</a>
+          <p style="margin-top: 0.8rem">Seu destino para descobrir receitas deliciosas e aprender técnicas culinárias.</p>
+          <div class="socials">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div>
+          <h3>Links úteis</h3>
+          <ul>
+            <li><a href="#">Política de Privacidade</a></li>
+            <li><a href="#">Termos de Uso</a></li>
+            <li><a href="#">Perguntas Frequentes</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Contato</h3>
+          <ul>
+            <li><i class="fas fa-envelope"></i> contato@saborearte.com</li>
+            <li><i class="fas fa-phone"></i> (11) 99999-9999</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">© 2024 Sabor &amp; Arte. Todos os direitos reservados.</div>
+    </div>
+  </footer>
+
+  <!-- ================= Modal de login / cadastro ================= -->
+  <div class="modal" id="authModal">
+    <div class="modal__card">
+      <div class="modal__head">
+        <h2 id="authTitle" style="font-family: var(--font)">Entrar</h2>
+        <button class="modal__close" id="authClose" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="modal__msg" id="authMsg"></div>
+      <form id="authForm">
+        <div class="field" id="nameField" hidden>
+          <label for="authName">Nome</label>
+          <input type="text" id="authName" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="authEmail">E-mail</label>
+          <input type="email" id="authEmail" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="authPassword">Senha</label>
+          <input type="password" id="authPassword" autocomplete="current-password" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-full" id="authSubmit">Entrar</button>
+      </form>
+      <p class="modal__switch" id="authSwitch">
+        Não tem uma conta? <a id="authSwitchLink">Cadastre-se</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
