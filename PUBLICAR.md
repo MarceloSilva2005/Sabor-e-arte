@@ -64,6 +64,8 @@ https://SEU_USUARIO.github.io/sabor-e-arte/
 
 ---
 
+
+
 ## Testar localmente antes de publicar
 
 Como o site não usa `fetch`, basta **abrir `frontend/index.html`** no navegador.
